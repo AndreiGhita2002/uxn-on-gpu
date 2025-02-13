@@ -866,7 +866,7 @@ private:
         }
 
         // resource creation
-        uxnResource = Resource(ctx, 0, sizeof(UxnMemory), &uxn->memory,
+        uxnResource = Resource(ctx, 0, sizeof(UxnMemory), uxn->memory,
             false, false, true);
         uxnResource.updateDescriptorSets(uxnResource.buffer, sizeof(UxnMemory));
 
