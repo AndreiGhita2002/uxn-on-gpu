@@ -3,10 +3,11 @@
 #include "Uxn.hpp"
 #include "DeviceController.hpp"
 
+uxn_memory::uxn_memory() = default;
+
 Uxn::Uxn(const char *program_path) {
     this->program_path = std::string(program_path);
     this->program_rom = readFile(program_path);
-    this->console_buffer = nullptr;
 
     if (program_rom.size() + 0x0100 * sizeof(glm::uint) > UXN_RAM_SIZE) {
         throw std::runtime_error("uxn program is bigger than uxn ram!");
@@ -37,7 +38,7 @@ void Uxn::reset() {
     memory = original_memory;
 }
 
-void Uxn::outputToFile(const char* output_file_name) {
+void Uxn::outputToFile(const char* output_file_name) const {
     #define printValue(i, arr) if (arr[i]!=0) { outFile << "[0x" << i << "]: 0x" << arr[i] << "\n"; }
 
     std::ofstream outFile(output_file_name, std::ios::out | std::ios::app);
@@ -75,5 +76,12 @@ void Uxn::outputToFile(const char* output_file_name) {
 }
 
 void Uxn::handleUxnIO() {
-    // todo uxn Console Output
+    if (memory->consoleFlag) {
+        char c = static_cast<char>(memory->dev[0x18]);
+        console_buffer.push_back(c);
+        if (c == 0x0a) {
+            std::cout << "[CONSOLE] " << console_buffer;
+            console_buffer.clear();
+        }
+    }
 }

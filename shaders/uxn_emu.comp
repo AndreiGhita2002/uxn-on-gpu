@@ -12,6 +12,7 @@ layout(std140, binding = 0) buffer UXN_Buffer {
     uint rst[256];  // return stack
     uint pRst;
     uint dev[256];  // device data
+    uint consoleFlag;
 } uxn;
 
 layout (local_size_x = 1) in;
@@ -25,6 +26,7 @@ uint emu_dei(uint addr) {
 // device out
 void emu_deo(uint addr, uint value) {
 	uxn.dev[addr] = value;
+	uxn.consoleFlag = 1;
 }
 
 /* VM Registry State */
@@ -299,6 +301,7 @@ int uxn_eval(State state) {
 
 void main() {
     State state = {0, 0, 0, uvec2(0,0), uvec2(0,0), uvec2(0,0)};
+    uxn.consoleFlag = 0;
 
     // Run the next Uxn instruction
     uxn_eval(state);

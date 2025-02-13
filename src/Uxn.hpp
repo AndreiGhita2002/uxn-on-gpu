@@ -16,11 +16,14 @@ typedef struct uxn_memory {
     glm::uint rst[UXN_STACK_SIZE];  // return stack
     glm::uint pRst;
     glm::uint dev[UXN_DEV_SIZE];
+    glm::uint consoleFlag;
+
+    uxn_memory();
 } UxnMemory;
 
 
 class Uxn {
-    public:
+public:
     UxnMemory* memory;
 
     explicit Uxn(const char* program_path);
@@ -29,15 +32,15 @@ class Uxn {
 
     void reset();
 
-    void outputToFile(const char* output_file_name);
+    void outputToFile(const char* output_file_name) const;
 
     void handleUxnIO();
 
-    private:
-    const char* console_buffer;
+private:
     UxnMemory* original_memory;
     std::string program_path;
     std::vector<char> program_rom;
+    std::string console_buffer;
 };
 
 #endif //UXN_H

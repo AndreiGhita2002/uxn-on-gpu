@@ -93,6 +93,7 @@
                OpMemberName %UXN_Buffer 4 "rst"
                OpMemberName %UXN_Buffer 5 "pRst"
                OpMemberName %UXN_Buffer 6 "dev"
+               OpMemberName %UXN_Buffer 7 "consoleFlag"
                OpName %uxn "uxn"
                OpName %param "param"
                OpName %param_0 "param"
@@ -2240,6 +2241,7 @@
                OpMemberDecorate %UXN_Buffer 4 Offset 263176
                OpMemberDecorate %UXN_Buffer 5 Offset 264200
                OpMemberDecorate %UXN_Buffer 6 Offset 264204
+               OpMemberDecorate %UXN_Buffer 7 Offset 265228
                OpDecorate %UXN_Buffer Block
                OpDecorate %uxn DescriptorSet 0
                OpDecorate %uxn Binding 0
@@ -2277,7 +2279,7 @@
 %_arr_uint_uint_256 = OpTypeArray %uint %uint_256
 %_arr_uint_uint_256_0 = OpTypeArray %uint %uint_256
 %_arr_uint_uint_256_1 = OpTypeArray %uint %uint_256
- %UXN_Buffer = OpTypeStruct %uint %_arr_uint_uint_65536 %_arr_uint_uint_256 %uint %_arr_uint_uint_256_0 %uint %_arr_uint_uint_256_1
+ %UXN_Buffer = OpTypeStruct %uint %_arr_uint_uint_65536 %_arr_uint_uint_256 %uint %_arr_uint_uint_256_0 %uint %_arr_uint_uint_256_1 %uint
 %_ptr_StorageBuffer_UXN_Buffer = OpTypePointer StorageBuffer %UXN_Buffer
         %uxn = OpVariable %_ptr_StorageBuffer_UXN_Buffer StorageBuffer
       %int_6 = OpConstant %int 6
