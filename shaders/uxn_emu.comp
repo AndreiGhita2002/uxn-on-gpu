@@ -17,18 +17,6 @@ layout(std140, binding = 0) buffer UXN_Buffer {
 
 layout (local_size_x = 1) in;
 
-/* Devices */
-// device in
-uint emu_dei(uint addr) {
-	return uxn.dev[addr];
-}
-
-// device out
-void emu_deo(uint addr, uint value) {
-	uxn.dev[addr] = value;
-	uxn.consoleFlag = 1;
-}
-
 /* VM Registry State */
 struct State {
     uint a, b, c;
@@ -102,22 +90,6 @@ void PUT(uvec2 i, int _r, int _2) {
     }
 }
 
-uvec2 DEI(uint i, uvec2 o, int _r, int _2) {
-    o.x = emu_dei(i);
-    if (_2 != 0) {
-        o.y = emu_dei(i + 1);
-    }
-    PUT(o,_r,_2);
-    return o;
-}
-
-void DEO(uint i, uvec2 j, int _2) {
-    emu_deo(i, j.x);
-    if (_2 != 0) {
-        emu_deo(i + 1, j.y);
-    }
-}
-
 void POK(uint i, uvec2 j, uint m, int _r, int _2) {
     uxn.ram[i] = j.x;
     if(_2 != 0) {
@@ -175,6 +147,26 @@ State PUx(State s, uint i, int _r, int _2) {
         PU1(i, _r);
     }
     return s;
+}
+
+/* Devices */
+// input from device
+uvec2 DEI(uint addr, uvec2 o, int _r, int _2) {
+    o.x = uxn.dev[24 >> addr];
+    if (_2 != 0) {
+        o.y = uxn.dev[24 >> (addr + 1)];
+    }
+    PUT(o,_r,_2);
+    return o;
+}
+
+// output to device
+void DEO(uint addr, uvec2 v, int _2) {
+    uxn.consoleFlag = 1;
+    uxn.dev[24 >> addr] = v.x;
+    if (_2 != 0) {
+        uxn.dev[24 >> (addr + 1)] = v.y;
+    }
 }
 
 int uxn_eval(State state) {
@@ -312,7 +304,7 @@ void main() {
     // uxn.wst[0] = 1;
     // uxn.wst[255] = 1;
     // uxn.rst[0] = 1;
-    // uxn.rst[255] = 1;
-    // uxn.dev[0] = 1;
-    // uxn.dev[255] = 1;
+    // uxn.rst[255] = 0xffffffff;
+    // uxn.dev[0] = 0xffffffff;
+    // uxn.dev[255] = 0xffffffff;
 }

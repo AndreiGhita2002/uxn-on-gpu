@@ -1085,8 +1085,7 @@ private:
     }
 
     void mainLoop() {
-        constexpr int TOTAL_STEPS = 20;
-        auto console_buffer = static_cast<char *>(malloc(20 * sizeof(char)));
+        constexpr int TOTAL_STEPS = 10;
 
         int step = 0;
         std::chrono::steady_clock::time_point last_time = std::chrono::steady_clock::now();
@@ -1111,10 +1110,6 @@ private:
             uxn->handleUxnIO();
             uxn->outputToFile("output.txt");
         }
-        copyDeviceUxnMemory(uxn->memory);
-        uxn->handleUxnIO();
-        uxn->outputToFile("output.txt");
-        free(console_buffer);
     }
 
     void cleanup() {

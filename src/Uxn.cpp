@@ -39,7 +39,7 @@ void Uxn::reset() {
 }
 
 void Uxn::outputToFile(const char* output_file_name) const {
-    #define printValue(i, arr) if (arr[i]!=0) { outFile << "[0x" << i << "]: 0x" << arr[i] << "\n"; }
+    #define printValue(i, arr) if (arr[i]!=0x00000000) { outFile << "[0x" << i << "]: 0x" << arr[i] << "\n"; }
 
     std::ofstream outFile(output_file_name, std::ios::out | std::ios::app);
     // Check if the file opened successfully
@@ -51,6 +51,7 @@ void Uxn::outputToFile(const char* output_file_name) const {
     outFile << std::hex;
     outFile << "---Uxn Memory:---\n";
     outFile << "Program Counter: 0x" << memory->pc << "\n";
+    outFile << "Flags: 0x" << memory->consoleFlag << "\n";
     outFile << "--RAM:--\n";
     for (int i = 0; i < UXN_RAM_SIZE; ++i) {
         printValue(i, memory->ram);
@@ -77,11 +78,27 @@ void Uxn::outputToFile(const char* output_file_name) const {
 
 void Uxn::handleUxnIO() {
     if (memory->consoleFlag) {
-        char c = static_cast<char>(memory->dev[0x18]);
+        char c = static_cast<char>(memory->dev[0x18] >> 24);
         console_buffer.push_back(c);
         if (c == 0x0a) {
             std::cout << "[CONSOLE] " << console_buffer;
             console_buffer.clear();
         }
     }
+}
+
+void Uxn::printConsoleBuffer(bool inHex) {
+    std::cout << "[CONSOLE] ";
+    if (inHex) {
+        std::cout << std::hex;
+        for (char c : console_buffer) {
+            std::cout << "0x" << static_cast<int>(c) << " ";
+        }
+        std::cout << std::dec;
+    } else {
+        std::cout << console_buffer;
+    }
+    std::cout << "\n";
+
+    console_buffer.clear();
 }
