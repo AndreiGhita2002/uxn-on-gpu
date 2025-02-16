@@ -51,7 +51,7 @@ void Uxn::outputToFile(const char* output_file_name) const {
     outFile << std::hex;
     outFile << "---Uxn Memory:---\n";
     outFile << "Program Counter: 0x" << memory->pc << "\n";
-    outFile << "Flags: 0x" << memory->consoleFlag << "\n";
+    outFile << "Flags: 0x" << memory->deviceFlags << "\n";
     outFile << "--RAM:--\n";
     for (int i = 0; i < UXN_RAM_SIZE; ++i) {
         printValue(i, memory->ram);
@@ -77,7 +77,7 @@ void Uxn::outputToFile(const char* output_file_name) const {
 }
 
 void Uxn::handleUxnIO() {
-    if (memory->consoleFlag) {
+    if (memory->deviceFlags) {
         char c = static_cast<char>(memory->dev[0x18] >> 24);
         console_buffer.push_back(c);
         if (c == 0x0a) {

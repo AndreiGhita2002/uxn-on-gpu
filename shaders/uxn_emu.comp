@@ -12,7 +12,7 @@ layout(std140, binding = 0) buffer UXN_Buffer {
     uint rst[256];  // return stack
     uint pRst;
     uint dev[256];  // device data
-    uint consoleFlag;
+    uint deviceFlags;
 } uxn;
 
 layout (local_size_x = 1) in;
@@ -162,7 +162,7 @@ uvec2 DEI(uint addr, uvec2 o, int _r, int _2) {
 
 // output to device
 void DEO(uint addr, uvec2 v, int _2) {
-    uxn.consoleFlag = 1;
+    uxn.deviceFlags = 1;
     uxn.dev[24 >> addr] = v.x;
     if (_2 != 0) {
         uxn.dev[24 >> (addr + 1)] = v.y;
@@ -293,7 +293,7 @@ int uxn_eval(State state) {
 
 void main() {
     State state = {0, 0, 0, uvec2(0,0), uvec2(0,0), uvec2(0,0)};
-    uxn.consoleFlag = 0;
+    uxn.deviceFlags = 0;
 
     // Run the next Uxn instruction
     uxn_eval(state);

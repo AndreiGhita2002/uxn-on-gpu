@@ -16,7 +16,7 @@ typedef struct uxn_memory {
     glm::uint rst[UXN_STACK_SIZE];  // return stack
     glm::uint pRst;
     glm::uint dev[UXN_DEV_SIZE];
-    glm::uint consoleFlag;
+    glm::uint deviceFlags;
 
     uxn_memory();
 } UxnMemory;

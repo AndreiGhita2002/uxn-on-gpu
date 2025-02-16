@@ -88,7 +88,7 @@
                OpMemberName %UXN_Buffer 4 "rst"
                OpMemberName %UXN_Buffer 5 "pRst"
                OpMemberName %UXN_Buffer 6 "dev"
-               OpMemberName %UXN_Buffer 7 "consoleFlag"
+               OpMemberName %UXN_Buffer 7 "deviceFlags"
                OpName %uxn "uxn"
                OpName %param "param"
                OpName %param_0 "param"
